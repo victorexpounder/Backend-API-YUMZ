@@ -36,10 +36,10 @@ const UserSchema = new mongoose.Schema({
         default: 0,
     }, 
     following : {
-        type: [string],
+        type: [String],
     }, 
     favorites : {
-        type: [string],
+        type: [String],
     }, 
 },
  {timestamps: true}
