@@ -1,5 +1,5 @@
 import express from 'express'
-import { deleteUser, follow, getUser, like, unfollow, unlike, update } from '../controllers/User.js';
+import { addFavorite, deleteUser, follow, getUser, like, unfollow, unlike, update } from '../controllers/User.js';
 import { verifyTken } from '../verifyToken.js';
 
 const router = express.Router();
@@ -13,11 +13,13 @@ router.get("/find/:id", getUser)
 //follow a User
 router.put("/follow/:id", verifyTken, follow)
 //unfollow a User
-router.put("/unfollow/:id", unfollow)
+router.put("/unfollow/:id", verifyTken, unfollow)
 //like a recipe
-router.put("/like/:videoId", like)
+router.put("/like/:videoId", like) 
 //unlike a recipe
 router.put("/unlike/:videoId", unlike)
-
+//add a recipe to favorites
+router.put("/favorite/:videoId", verifyTken, addFavorite)
+  
 
 export default router; 

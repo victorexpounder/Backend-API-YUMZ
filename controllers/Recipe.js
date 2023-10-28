@@ -58,7 +58,7 @@ export const getRecipe = async(req, res, next) =>{
 }
 export const random = async(req, res, next) =>{
     try {
-        const recipes = Recipe.aggregate([{$sample : {size: 40}}]);
+        const recipes = await Recipe.aggregate([{$sample : {size: 1}}]);
         res.status(200).json(recipes);
     } catch (error) {
         next(error)
@@ -66,15 +66,15 @@ export const random = async(req, res, next) =>{
 }
 export const followedVid = async(req, res, next) =>{
     try {
-        const user = User.find(req.user.id);
+        const user = await User.findById(req.user.id);
         const followedUsers = user.following;
 
-        const list = Promise.all(
+        const list = await Promise.all(
             followedUsers.map((channelId)=>{
                 return Recipe.find({userId : channelId})
             })
         )
-        res.status(200).json(list)
+        res.status(200).json(list.flat().sort((a,b)=> b.createdAt - a.createdAt))
     } catch (error) {
         next(error)
     }
@@ -88,3 +88,23 @@ export const trend = async(req, res, next) =>{
         next(error)
     }
 }
+export const getByTag = async(req, res, next) =>{
+    const categories = req.query.categories.split(",")
+    try {
+        const recipe = await Recipe.find({category : {$in : categories}}).limit(20);
+        res.status(200).json(recipe); 
+    } catch (error) {
+        next(error)
+    }
+}
+export const getBySearch = async(req, res, next) =>{
+    const query = req.query.q
+    try {
+        const recipe = await Recipe.find({
+            title : {$regex : query, $options: "i"}
+        }).limit(40);
+        res.status(200).json(recipe);
+    } catch (error) {
+        next(error)
+    }
+} 

@@ -1,7 +1,9 @@
 import { createError } from "../error.js" 
+import Recipe from "../models/Recipe.js";
 import User from "../models/User.js" 
 
 export const update = async(req, res, next) =>{
+    //verify user
     if(req.params.id === req.user.id)
     {
         try{
@@ -47,7 +49,7 @@ export const getUser = async(req, res, next) =>{
 }
 export const follow = async(req, res, next) =>{
     try {
-        await User.findById(req.user.id, {
+        await User.findByIdAndUpdate(req.user.id, {
             $push : {following : req.params.id}
         })
 
@@ -56,12 +58,13 @@ export const follow = async(req, res, next) =>{
         })
         res.status(200).json("followed sucessfully");
     } catch (error) {
-        
+        next(error)
     }
 }
+
 export const unfollow = async(req, res, next) =>{
     try {
-        await User.findById(req.user.id, {
+        await User.findByIdAndUpdate(req.user.id, {
             $pull : {following : req.params.id}
         })
 
@@ -72,6 +75,16 @@ export const unfollow = async(req, res, next) =>{
     } catch (error) {
         
     }
+}
+export const addFavorite = async(req, res, next) =>{
+        try {
+            await User.findByIdAndUpdate(req.user.id, {
+                $push : {favorites : req.params.videoId}
+            })
+            res.status(200).json("Added to Favorites")
+        } catch (error) {
+            next(error);
+        }
 }
 export const like = async(req, res, next) =>{
     
