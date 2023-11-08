@@ -8,7 +8,7 @@ export const addRecipe = async(req,res,next) =>{
         res.status(200).json(savedRecipe);
     } catch (error) {
         next(error)
-    }
+    } 
 }
 export const updateRecipe = async(req,res,next) =>{
     try {

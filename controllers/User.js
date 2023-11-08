@@ -87,8 +87,30 @@ export const addFavorite = async(req, res, next) =>{
         }
 }
 export const like = async(req, res, next) =>{
+    const id = req.user.id;
+    const recipeId = req.params.recipeId;
+    try {
+        await Recipe.findByIdAndUpdate(recipeId, {
+            $addToSet : {likes:id},
+            $pull : {dislikes:id} 
+        })
+        res.status(200).json("like added succesfully")
+    } catch (error) { 
+        next(error)
+    }
     
 }
 export const unlike = async(req, res, next) =>{
+    const id = req.user.id;
+    const recipeId = req.params.recipeId;
+    try {
+        await Recipe.findByIdAndUpdate(recipeId, {
+            $pull : {likes : id},
+            $addToSet : {dislikes: id}
+        })
+        res.status(200).json("Recipe Disliked succesfully") 
+    } catch (error) {
+        next(error)
+    }
     
 }

@@ -14,7 +14,7 @@ export const addComments = async(req, res, next) =>{
 export const deleteComments = async(req, res, next) =>{
     try {
         const comment = await Comments.findById(req.params.id)
-        const recipe = await Recipe.findById(req.params.id)
+        const recipe = await Recipe.findById(comment.recipeId)
         if(req.user.id == comment.userId || req.user.id == recipe.userId)
         {
             await Comments.findByIdAndDelete(req.params.id);
@@ -25,7 +25,7 @@ export const deleteComments = async(req, res, next) =>{
     } catch (error) {
         next(error)
     }
-   
+  
 }
 export const getComments = async(req, res, next) =>{
  try {

@@ -5,7 +5,7 @@ import { createError } from "../error.js";
 import jwt from "jsonwebtoken"
 export const signup = async(req, res, next) =>{
     try{
-        //hashing our password
+        //hashing our password 
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(req.body.password, salt);
         //seting our new user from our user schema created

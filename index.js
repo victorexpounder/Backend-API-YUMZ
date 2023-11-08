@@ -17,10 +17,10 @@ const connect = () =>{
     mongoose.connect(process.env.MONGO).then(()=>{
         console.log("connected to DB")
     }).catch((err)=>{
-        console.log("!Cannot connect to DB")
-    })
-}
-
+        console.log("!Cannot connect to DB")   
+    })  
+} 
+ 
 app.use(cookieParser()); 
 app.use(express.json()); 
 app.use("/api/auth", AuthRoutes);
@@ -35,7 +35,7 @@ app.use((err, req, res, next)=>{
         message, 
         status,
 
-    })
+    }) 
 })
 
 app.listen(8800, ()=>{  

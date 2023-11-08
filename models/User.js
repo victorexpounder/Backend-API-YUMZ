@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema({
     firstName : {
-        type: String,
+        type: String,   
         required : true,
     },
     lastName : {
@@ -14,7 +14,7 @@ const UserSchema = new mongoose.Schema({
         required : true,
         unique: true,
     }, 
-    password : {
+    password : { 
         type: String,
         required : true,
     }, 
@@ -28,7 +28,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
         unique: true,
     }, 
-    description : {
+    description : { 
         type: String,
     }, 
     followers : {
@@ -45,4 +45,4 @@ const UserSchema = new mongoose.Schema({
  {timestamps: true}
 );
 
-export default mongoose.model("User", UserSchema); 
+export default mongoose.model("User", UserSchema);  

@@ -15,11 +15,10 @@ router.put("/follow/:id", verifyTken, follow)
 //unfollow a User
 router.put("/unfollow/:id", verifyTken, unfollow)
 //like a recipe
-router.put("/like/:videoId", like) 
+router.put("/like/:recipeId", verifyTken, like) 
 //unlike a recipe
-router.put("/unlike/:videoId", unlike)
+router.put("/unlike/:recipeId", verifyTken, unlike)
 //add a recipe to favorites
 router.put("/favorite/:videoId", verifyTken, addFavorite)
-  
 
 export default router; 
