@@ -23,7 +23,7 @@ export const signIn = async(req, res, next) =>{
     try{
         const user = await User.findOne({email: req.body.email});
         if(!user) return(next(createError(404, "User not found")));
-        const isCorrect = bcrypt.compare(req.body.password, user.password);
+        const isCorrect = await bcrypt.compare(req.body.password, user.password);
         if (!isCorrect) return(next(createError(400, "Wrong Credentials")));
 
         const {password, ...others} = user._doc
@@ -32,7 +32,7 @@ export const signIn = async(req, res, next) =>{
             httpOnly : true,
         })
         .status(200)
-        .json(others)
+        .json(others) 
     }catch(err){ 
        next(err);
     } 
