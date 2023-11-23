@@ -11,7 +11,7 @@ export const addComments = async(req, res, next) =>{
         next(error)
     }
 }
-export const deleteComments = async(req, res, next) =>{
+export const deleteComments = async(req, res, next) =>{ 
     try {
         const comment = await Comments.findById(req.params.id)
         const recipe = await Recipe.findById(comment.recipeId)

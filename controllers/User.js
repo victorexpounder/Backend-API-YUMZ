@@ -71,7 +71,7 @@ export const unfollow = async(req, res, next) =>{
         await User.findByIdAndUpdate(req.params.id, {
             $inc : {followers : -1}
         })
-        res.status(200).json("Unfollowed sucessfully");
+        res.status(200).json("Unfollowed sucessfully"); 
     } catch (error) {
         
     }
@@ -88,10 +88,10 @@ export const addFavorite = async(req, res, next) =>{
 }
 export const like = async(req, res, next) =>{
     const id = req.user.id;
-    const recipeId = req.params.recipeId;
+    const recipeId = req.params.recipeId; 
     try {
-        await Recipe.findByIdAndUpdate(recipeId, {
-            $addToSet : {likes:id},
+        await Recipe.findByIdAndUpdate(recipeId, {  
+            $addToSet : {likes:id}, 
             $pull : {dislikes:id} 
         })
         res.status(200).json("like added succesfully")

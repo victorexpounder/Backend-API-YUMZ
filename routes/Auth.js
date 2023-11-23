@@ -9,7 +9,7 @@ router.post("/signup", signup)
 router.post("/signin", signIn)
 //GOOGLE AUTH
 router.post("/google",)
- 
+  
 
 
 export default router;

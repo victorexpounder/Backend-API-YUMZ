@@ -56,6 +56,14 @@ export const getRecipe = async(req, res, next) =>{
         next(error)
     }
 }
+export const getUserRecipe = async(req, res, next) =>{
+    try {
+        const recipe = Recipe.find({userId : req.user.id});
+        res.status(200).json(recipe);
+    } catch (error) {
+        next(error)
+    }
+}
 export const random = async(req, res, next) =>{
     try {
         const recipes = await Recipe.aggregate([{$sample : {size: 3}}]);

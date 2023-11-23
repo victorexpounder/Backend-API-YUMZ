@@ -1,5 +1,5 @@
 import express from 'express'
-import { addRecipe, deleteRecipe, followedVid, getBySearch, getByTag, getRecipe, random, trend, updateRecipe } from '../controllers/Recipe.js';
+import { addRecipe, deleteRecipe, followedVid, getBySearch, getByTag, getRecipe, getUserRecipe, random, trend, updateRecipe } from '../controllers/Recipe.js';
 import { verifyTken } from '../verifyToken.js';
 
 const router = express.Router();
@@ -7,6 +7,7 @@ const router = express.Router();
 router.post("/",verifyTken, addRecipe);
 router.put("/:id", verifyTken, updateRecipe);
 router.delete("/post/:id", verifyTken, deleteRecipe);
+router.get("/", verifyTken, getUserRecipe);
 router.get("/find/:id", getRecipe);
 router.get("/random", random);
 router.get("/followedVid",verifyTken, followedVid);
