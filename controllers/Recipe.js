@@ -12,7 +12,7 @@ export const addRecipe = async(req,res,next) =>{
 }
 export const updateRecipe = async(req,res,next) =>{
     try {
-        const recipe = Recipe.findById(req.params.id)
+        const recipe = await Recipe.findById(req.params.id)
         if(!recipe) next(createError(404, "Recipe Not Found"));
         if(recipe.userId == req.user.id)
         {
@@ -33,7 +33,7 @@ export const updateRecipe = async(req,res,next) =>{
 }
 export const deleteRecipe = async(req, res, next) =>{
     try {
-        const recipe = Recipe.findById(req.params.id)
+        const recipe = await Recipe.findById(req.params.id)
         if(!recipe) next(createError(404, "Recipe Not Found"));
         if(recipe.userId == req.user.id)
         {
@@ -50,7 +50,7 @@ export const deleteRecipe = async(req, res, next) =>{
 }
 export const getRecipe = async(req, res, next) =>{
     try {
-        const recipe = Recipe.findById(req.params.id);
+        const recipe = await Recipe.findById(req.params.id);
         res.status(200).json(recipe);
     } catch (error) {
         next(error)
@@ -58,7 +58,15 @@ export const getRecipe = async(req, res, next) =>{
 }
 export const getUserRecipe = async(req, res, next) =>{
     try {
-        const recipe = Recipe.find({userId : req.user.id});
+        const recipe = await Recipe.find({userId : req.user.id});
+        res.status(200).json(recipe);
+    } catch (error) {
+        next(error)
+    }
+}
+export const getOtherUserRecipe = async(req, res, next) =>{
+    try {
+        const recipe = await Recipe.find({userId : req.params.id});
         res.status(200).json(recipe);
     } catch (error) {
         next(error)
@@ -90,7 +98,7 @@ export const followedVid = async(req, res, next) =>{
 
 export const trend = async(req, res, next) =>{
     try {
-        const recipe = Recipe.find().sort({likes : -1});
+        const recipe = await Recipe.find().sort({likes : -1});
         res.status(200).json(recipe);
     } catch (error) {
         next(error)
