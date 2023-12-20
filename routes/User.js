@@ -1,5 +1,5 @@
 import express from 'express'
-import { addFavorite, deleteUser, follow, getUser, like, unfollow, unlike, update } from '../controllers/User.js';
+import { addFavorite, deleteUser, follow, getUser, handleAvailability, like, removeFavorite, unfollow, unlike, update } from '../controllers/User.js';
 import { verifyTken } from '../verifyToken.js';
 
 const router = express.Router();
@@ -20,5 +20,10 @@ router.put("/like/:recipeId", verifyTken, like)
 router.put("/unlike/:recipeId", verifyTken, unlike)
 //add a recipe to favorites
 router.put("/favorite/:videoId", verifyTken, addFavorite)
+
+router.put("/unfavorite/:videoId", verifyTken, removeFavorite)
+
+//check handle availability
+router.get("/handle/:handle", handleAvailability)
 
 export default router; 

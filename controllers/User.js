@@ -22,6 +22,19 @@ export const update = async(req, res, next) =>{
         next(createError(403, "You can only update your own details"))
     }
 }
+export const handleAvailability = async(req, res, next) =>{
+    try {
+        const user = await User.findOne({handle : req.params.handle})
+        if(user)
+        {
+            return(next(createError(403, `${req.params.handle} has been taken`)));
+        }else{
+            res.status(200).json(req.params.handle)
+        }
+    } catch (error) {
+        next(error)
+    }
+}
 
 export const deleteUser = async(req, res, next) =>{
     if(req.params.id === req.user.id)
@@ -82,6 +95,16 @@ export const addFavorite = async(req, res, next) =>{
                 $push : {favorites : req.params.videoId}
             })
             res.status(200).json("Added to Favorites")
+        } catch (error) {
+            next(error);
+        }
+}
+export const removeFavorite = async(req, res, next) =>{
+        try {
+            await User.findByIdAndUpdate(req.user.id, {
+                $pull : {favorites : req.params.videoId}
+            })
+            res.status(200).json("Removed from Favorites")
         } catch (error) {
             next(error);
         }
