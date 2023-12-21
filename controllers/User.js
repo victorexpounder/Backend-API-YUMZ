@@ -1,6 +1,11 @@
 import { createError } from "../error.js" 
 import Recipe from "../models/Recipe.js";
 import User from "../models/User.js" 
+import { Resend } from 'resend';
+import crypto from 'crypto'
+import bcrypt from 'bcryptjs';
+
+
 
 export const update = async(req, res, next) =>{
     //verify user
@@ -15,11 +20,11 @@ export const update = async(req, res, next) =>{
                 {new: true} 
             );
             res.status(200).json(updatedUser);
-        }catch(err){
+        }catch(err){ 
             next(err)
         }
     }else{
-        next(createError(403, "You can only update your own details"))
+        next(createError(403, "You can only update our own account")) 
     }
 }
 export const handleAvailability = async(req, res, next) =>{
@@ -137,3 +142,61 @@ export const unlike = async(req, res, next) =>{
     }
     
 }
+export const sendPasswordReset = async(req, res, next) =>{
+    try {
+        const user = await User.findOne({email: req.body.email});
+        if(!user) return(next(createError(404, "User not found")));
+        const resetToken = crypto.randomBytes(20).toString('hex');
+        const resetTokenExpiration = Date.now() + 3600000; // Token expires in 1 hour
+        // Save the reset token to the user in the database
+        user.resetToken = resetToken;
+        user.resetTokenExpiration = resetTokenExpiration;
+        await user.save();
+        const resetLink = ` http://localhost:3000/forgot-password/reset/${resetToken}`;
+        const resend = new Resend('re_55Ree3An_F9zTa4134PD2j87JeJSPnX7F');
+
+        await resend.emails.send({
+        from: 'noreply@resend.dev',
+        to: req.body.email,
+        subject: 'Password Reset',
+        html: `<p>Click on the link below to reset password</p> <br />
+                ${resetLink} <br />
+                <p>This link will expire in one hour</p> <br />
+                <strong>if you did not request for this please ignore</strong>
+        `
+        }); 
+        res.status(200).json("password reset link sent check email inbox")
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const PasswordReset = async(req, res, next) =>{
+    const { token, newPassword } = req.body;
+
+  try {
+    const user = await User.findOne({
+      resetToken: token,
+      
+    });
+
+    if (!user) {
+      return res.status(400).send('Invalid or expired token');
+    }
+
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(newPassword, salt);
+    // Update the user's password
+    user.password = hash;
+    user.resetToken = undefined;
+    user.resetTokenExpiration = undefined;
+    await user.save();
+
+    res.status(200).json('Password reset successfully');
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+}
+
+

@@ -45,6 +45,12 @@ const UserSchema = new mongoose.Schema({
     favorites : {
         type: [String],
     }, 
+    resetToken : {
+        type: String,
+    }, 
+    resetTokenExpiration : {
+        type: Date,
+    }, 
 },
  {timestamps: true}
 );

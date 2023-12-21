@@ -74,7 +74,7 @@ export const getOtherUserRecipe = async(req, res, next) =>{
 }
 export const random = async(req, res, next) =>{
     try {
-        const recipes = await Recipe.aggregate([{$sample : {size: 3}}]);
+        const recipes = await Recipe.aggregate([{$sample : {size: 20}}]);
         res.status(200).json(recipes);
     } catch (error) {
         next(error)
@@ -104,7 +104,7 @@ export const trend = async(req, res, next) =>{
         next(error)
     }
 }
-export const getByTag = async(req, res, next) =>{
+export const getByTag = async(req, res, next) =>{ 
     const categories = req.query.categories.split(",")
     try {
         const recipe = await Recipe.find({category : {$in : categories}}).limit(20);
