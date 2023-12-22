@@ -15,11 +15,11 @@ const RecipeSchema = new mongoose.Schema({
     },
     imgUrl : {
         type: String,
-        required : true,
+        
     },
     videoUrl : {
         type: String,
-        required : true,
+        
     },
     category : {
         type: [String],

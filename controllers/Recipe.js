@@ -17,7 +17,7 @@ export const updateRecipe = async(req,res,next) =>{
         if(recipe.userId == req.user.id)
         {
             const updatedRecipe = await Recipe.findOneAndUpdate(
-                req.params.id,
+                {_id: req.params.id},
                 {
                     $set : req.body
                 },
@@ -38,7 +38,7 @@ export const deleteRecipe = async(req, res, next) =>{
         if(recipe.userId == req.user.id)
         {
             await Recipe.findOneAndDelete(
-                req.params.id,
+                { _id: req.params.id }
             )
             res.status(200).json("recipe deleted");
         }else{
