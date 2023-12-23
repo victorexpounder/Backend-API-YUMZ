@@ -9,6 +9,11 @@ export const signup = async(req, res, next) =>{
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(req.body.password, salt);
         //seting our new user from our user schema created
+        const user = await User.findOne({email: req.body.email})
+        if(user)
+        {
+            next(createError(400, "Acoount already exists please Login"))
+        }
         const newUser = new User({...req.body, password: hash });
 
         await newUser.save();
