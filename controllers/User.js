@@ -152,11 +152,11 @@ export const sendPasswordReset = async(req, res, next) =>{
         user.resetToken = resetToken;
         user.resetTokenExpiration = resetTokenExpiration;
         await user.save();
-        const resetLink = ` http://localhost:3000/forgot-password/reset/${resetToken}`;
+        const resetLink = ` https://www.yumz.com.ng/forgot-password/reset/${resetToken}`;
         const resend = new Resend('re_55Ree3An_F9zTa4134PD2j87JeJSPnX7F');
 
         await resend.emails.send({
-        from: 'noreply@resend.dev',
+        from: 'noreply@yumz.com.ng',
         to: req.body.email,
         subject: 'Password Reset',
         html: `<p>Click on the link below to reset password</p> <br />
