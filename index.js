@@ -6,15 +6,15 @@ import RecipeRoutes from './routes/Recipe.js'
 import CommentsRoutes from './routes/Comments.js'
 import AuthRoutes from './routes/Auth.js'
 import cookieParser from 'cookie-parser';
+import { getEnv } from 'swiftenv';
 //initializing express
 const app = express();
 
-// dovenv config
-dotenv.config();
+const mongo = getEnv("MONGO")
 
 //fuction to connect to our mongoDB cluster
 const connect = () =>{
-    mongoose.connect(process.env.MONGO).then(()=>{
+    mongoose.connect(mongo).then(()=>{
         console.log("connected to DB")
     }).catch((err)=>{
         console.log("!Cannot connect to DB")   

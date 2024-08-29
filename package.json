@@ -18,7 +18,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.5.3",
     "nodemon": "^3.0.1",
-    "resend": "^2.0.0"
+    "resend": "^2.0.0",
+    "swiftenv": "^1.0.4"
   },
   "engines": {
     "node": ">=18"

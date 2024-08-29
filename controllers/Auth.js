@@ -3,6 +3,11 @@ import User from "../models/User.js";
 import bcrypt from 'bcryptjs';
 import { createError } from "../error.js";
 import jwt from "jsonwebtoken"
+import { getEnv } from "swiftenv";
+
+const jwtCode = getEnv('JWT')
+
+
 export const signup = async(req, res, next) =>{
     try{
         //hashing our password 
@@ -32,7 +37,7 @@ export const signIn = async(req, res, next) =>{
         if (!isCorrect) return(next(createError(400, "Wrong Credentials")));
 
         const {password, ...others} = user._doc
-        const token = jwt.sign({id : user._id}, process.env.JWT)
+        const token = jwt.sign({id : user._id}, jwtCode)
         res.cookie("access_token", token, {
             httpOnly : true,
         })
